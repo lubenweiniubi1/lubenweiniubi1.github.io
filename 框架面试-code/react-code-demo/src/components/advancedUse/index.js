@@ -6,7 +6,7 @@ import React from 'react'
 // import SCUDemo from './SCUDemo'
 // import SCUDemo2 from './SCUDemo2'
 // import PureComponentDemo from './PureComponentDemo'
-// import HOCDemo from './HOCDemo'
+import HOCDemo from './HOCDemo'
 import RenderPropDemo from './RenderPropDemo'
 
 class AdvancedUse extends React.Component {
