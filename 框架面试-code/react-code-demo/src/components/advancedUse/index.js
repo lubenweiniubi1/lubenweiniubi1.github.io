@@ -8,6 +8,7 @@ import React from 'react'
 import PureComponentDemo from './PureComponentDemo'
 import HOCDemo from './HOCDemo'
 import RenderPropDemo from './RenderPropDemo'
+import Playground from './Playground'
 
 class AdvancedUse extends React.Component {
     constructor(props) {
@@ -21,9 +22,10 @@ class AdvancedUse extends React.Component {
             {/* <LazyDemo/> */}
             {/* <SCUDemo/> */}
             {/* <SCUDemo2/> */}
-            <PureComponentDemo/>
+            {/* <PureComponentDemo/> */}
             {/* <HOCDemo a="100"/> */}
             {/* <RenderPropDemo a="200"/> */}
+            <Playground/>
         </div>
     }
 }
