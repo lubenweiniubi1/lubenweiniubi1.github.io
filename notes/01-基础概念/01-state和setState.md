@@ -566,6 +566,226 @@ useState 的核心机制：
 3. 更新是异步的，支持批量处理
 4. 使用 Object.is() 进行状态比较
 5. 函数式更新确保获取最新状态
+<br>
+<br>
+
+# 函数组件和类组件 setState 的区别
+
+## 核心差异
+
+### 类组件的 setState
+
+在类组件中，即使传入相同的值，React 也会触发重新渲染：
+
+```javascript
+class Counter extends React.Component {
+  state = { count: 0 };
+  
+  handleClick = () => {
+    // 即使值相同，也会触发重新渲染
+    this.setState({ count: 0 });
+    // 组件会重新执行 render()
+  };
+  
+  render() {
+    console.log('render 被调用');
+    return <div>{this.state.count}</div>;
+  }
+}
+```
+
+### 函数组件的 useState
+
+在函数组件中，React 会进行优化：
+
+```javascript
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  const handleClick = () => {
+    // 如果值相同，不会触发重新渲染
+    setCount(0);
+    // 组件不会重新执行
+  };
+  
+  console.log('组件重新渲染');
+  return <div>{count}</div>;
+}
+```
+
+## 为什么会这样？
+
+### 1. **比较机制不同**
+
+**类组件**：
+- React 不会对 setState 的参数进行深度比较
+- 直接标记组件为"需要更新"
+- 触发重新渲染流程
+
+**函数组件**：
+- React 使用 `Object.is()` 进行比较
+- 如果新旧值相同，跳过更新
+
+```javascript
+// React 内部的比较逻辑
+if (Object.is(newState, oldState)) {
+  // 跳过重新渲染
+  return;
+}
+```
+
+### 2. **Object.is() 的行为**
+详细看《js中的比较》，目前我还没总结
+
+## 实际例子对比
+
+### 类组件示例
+
+```javascript
+class Example extends React.Component {
+  state = { count: 0 };
+  
+  handleClick = () => {
+    console.log('点击前:', this.state.count);
+    this.setState({ count: 0 });  // 即使值相同
+    console.log('点击后:', this.state.count);
+  };
+  
+  render() {
+    console.log('render 被调用');  // 每次点击都会执行
+    return (
+      <button onClick={this.handleClick}>
+        Count: {this.state.count}
+      </button>
+    );
+  }
+}
+```
+
+**输出**：
+```
+点击前: 0
+render 被调用  // 重新渲染了
+点击后: 0
+```
+
+### 函数组件示例
+
+```javascript
+function Example() {
+  const [count, setCount] = useState(0);
+  
+  const handleClick = () => {
+    console.log('点击前:', count);
+    setCount(0);  // 值相同
+    console.log('点击后:', count);
+  };
+  
+  console.log('组件重新渲染');  // 只在首次渲染时执行
+  return (
+    <button onClick={handleClick}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+**输出**：
+```
+点击前: 0
+点击后: 0
+// 没有"组件重新渲染"的输出，说明没有重新渲染
+```
+
+## 对象引用的特殊情况
+
+```javascript
+function ObjectExample() {
+  const [obj, setObj] = useState({ count: 0 });
+  
+  const handleClick1 = () => {
+    // 相同引用，不会重新渲染
+    setObj(obj);
+    console.log('不会重新渲染');
+  };
+  
+  const handleClick2 = () => {
+    // 新对象，会重新渲染
+    setObj({ count: 0 });
+    console.log('会重新渲染');
+  };
+  
+  console.log('组件渲染');
+  return (
+    <div>
+      <button onClick={handleClick1}>相同引用</button>
+      <button onClick={handleClick2}>新对象</button>
+    </div>
+  );
+}
+```
+
+## 为什么函数组件要这样设计？
+
+### 1. **性能优化**
+
+函数组件每次渲染都会重新执行整个函数，如果每次都重新渲染，性能开销会很大。
+
+```javascript
+function HeavyComponent() {
+  const [state, setState] = useState(0);
+  
+  // 每次渲染都会重新创建这些变量和函数
+  const data = computeExpensiveData();
+  const handleClick = () => { /* ... */ };
+  
+  return <div>{data}</div>;
+}
+```
+
+### 2. **避免无限循环**
+
+```javascript
+function Example() {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    setCount(0);  // 如果每次都重新渲染，会无限循环
+  }, []);
+  
+  // 因为 Object.is(0, 0) 为 true，所以不会重新渲染
+  // 避免了无限循环
+}
+```
+
+## 如何强制重新渲染？
+
+如果确实需要强制重新渲染（虽然很少需要），可以：
+
+```javascript
+function ForceRerender() {
+  const [, forceUpdate] = useState(0);
+  
+  const handleClick = () => {
+    // 传入不同的值
+    forceUpdate(prev => prev + 1);
+  };
+  
+  return <button onClick={handleClick}>强制更新</button>;
+}
+```
+
+## 总结
+
+| 特性 | 类组件 setState | 函数组件 useState |
+|------|----------------|-------------------|
+| 相同值更新 | 会重新渲染 | 不会重新渲染 |
+| 比较机制 | 无深度比较 | Object.is() 比较 |
+| 性能 | 较低 | 较高 |
+| 设计理念 | 命令式 | 声明式 |
+
+**关键点**：函数组件的 useState 通过 Object.is() 比较来优化性能，避免不必要的重新渲染，这是 React Hooks 的一个重要优化。
+<br>
 
 # 批处理
 
