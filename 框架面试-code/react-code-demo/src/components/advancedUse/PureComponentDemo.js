@@ -1,102 +1,39 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { flushSync } from 'react-dom';
 
-class Input extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            title: ''
-        }
-    }
-    render() {
-        return <div>
-            <input value={this.state.title} onChange={this.onTitleChange}/>
-            <button onClick={this.onSubmit}>提交</button>
-        </div>
-    }
-    onTitleChange = (e) => {
-        this.setState({
-            title: e.target.value
-        })
-    }
-    onSubmit = () => {
-        const { submitTitle } = this.props
-        submitTitle(this.state.title)
+export default class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0, data: ['a', 'b', 'c'] };
+    console.log('con');
+  }
 
-        this.setState({
-            title: ''
-        })
-    }
-}
-// props 类型检查
-Input.propTypes = {
-    submitTitle: PropTypes.func.isRequired
+  handleClick = () => {
+    this.setState({
+      count: this.state.count + 1,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <ComponentB data={this.state.data} />
+        <p>Count: {this.state.count}</p>
+        <button onClick={this.handleClick}>Increment</button>
+      </div>
+    );
+  }
 }
 
-class List extends React.PureComponent {
-    constructor(props) {
-        super(props)
-    }
-    render() {
-        const { list } = this.props
+class ComponentB extends React.PureComponent {
+  render() {
+    console.log('sub render?', this.props);
+    // 如果 data 引用变了，即使内容一样。这里会打印两次
+    // 因为 Pure 比较的是 this.props 的第一层，这里 props = {data: xxx}, 而不是单独比较 this.props.data
 
-        return <ul>{list.map((item, index) => {
-            return <li key={item.id}>
-                <span>{item.title}</span>
-            </li>
-        })}</ul>
-    }
-    shouldComponentUpdate() {/*浅比较*/}
+    // 这里会 work 的场景是当父组件的 state 更新时，Component B 所有props都没有变，引用也没变，则 Component B 不会重新渲染
+    // old props: { data: [1,2,3] }
+    // new props: { data: 引用和old props一样 }
+    return <h1>hello</h1>;
+  }
 }
-// props 类型检查
-List.propTypes = {
-    list: PropTypes.arrayOf(PropTypes.object).isRequired
-}
-
-class TodoListDemo extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            list: [
-                {
-                    id: 'id-1',
-                    title: '标题1'
-                },
-                {
-                    id: 'id-2',
-                    title: '标题2'
-                },
-                {
-                    id: 'id-3',
-                    title: '标题3'
-                }
-            ]
-        }
-    }
-    render() {
-        return <div>
-            <Input submitTitle={this.onSubmitTitle}/>
-            <List list={this.state.list}/>
-        </div>
-    }
-    onSubmitTitle = (title) => {
-        // 正确的用法
-        this.setState({
-            list: this.state.list.concat({
-                id: `id-${Date.now()}`,
-                title
-            })
-        })
-
-        // // 为了演示 SCU ，故意写的错误用法
-        // this.state.list.push({
-        //     id: `id-${Date.now()}`,
-        //     title
-        // })
-        // this.setState({
-        //     list: this.state.list
-        // })
-    }
-}
-
-export default TodoListDemo
