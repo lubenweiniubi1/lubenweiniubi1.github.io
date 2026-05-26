@@ -434,6 +434,7 @@ const baseQuery = fetchBaseQuery({
 ### 4.3 自定义 baseQuery
 
 ```javascript
+// 默认用的fetch，也可以自定义，比如用 axios
 // 使用 axios 作为 baseQuery
 import axios from 'axios'
 
