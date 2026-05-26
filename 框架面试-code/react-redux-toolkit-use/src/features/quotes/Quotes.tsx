@@ -1,7 +1,7 @@
 import type { JSX } from "react"
 import { useState } from "react"
 import styles from "./Quotes.module.css"
-import { useGetQuotesQuery } from "./quotesApiSlice"
+import { useGetQuotesQuery, quotesSelectors } from "./quotesApiSlice"
 
 const options = [5, 10, 20, 30]
 
@@ -27,7 +27,10 @@ export const Quotes = (): JSX.Element | null => {
     )
   }
 
-  if (isSuccess) {
+  if (isSuccess && data) {
+    // 使用 adapter 的 selectors 从 normalized 数据中提取所有 quote
+    const quotes = quotesSelectors.selectAll(data)
+
     return (
       <div className={styles.container}>
         <h3>Select the Quantity of Quotes to Fetch:</h3>
@@ -44,7 +47,7 @@ export const Quotes = (): JSX.Element | null => {
             </option>
           ))}
         </select>
-        {data.quotes.map(({ author, quote, id }) => (
+        {quotes.map(({ author, quote, id }) => (
           <blockquote key={id}>
             &ldquo;{quote}&rdquo;
             <footer>

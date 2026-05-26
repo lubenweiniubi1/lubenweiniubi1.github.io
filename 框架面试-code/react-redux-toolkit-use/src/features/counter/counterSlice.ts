@@ -64,7 +64,7 @@ export const counterSlice = createAppSlice({
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
-    selectCount: counter => counter.value,
+    selectCount:  counter => counter.value,
     selectStatus: counter => counter.status,
   },
 })
