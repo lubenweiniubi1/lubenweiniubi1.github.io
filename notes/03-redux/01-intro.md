@@ -284,37 +284,15 @@ unsubscribe();
 
 ### 4.1 Redux 数据流图解
 
-```
-┌─────────────┐
-│   Action    │
-│   (对象)     │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│   Store     │
-│ dispatch()  │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│   Reducer   │
-│  (纯函数)    │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│    State    │
-│   (新状态)   │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│   Views     │
-│  (UI 更新)   │
-└─────────────┘
-```
+![Redux 数据流图](../_assets/redux-data-flow-1.gif)
 
+1. UI → Event Handler，用户点击按钮 → 触发事件处理器。
+2. Event Handler → Store（via Dispatch），事件处理器调用 dispatch({ type: 'DEPOSIT', payload: 10 })。
+3. Store → Reducer, Store 将当前 State 和 Action 传给 Reducer。
+4. Reducer → 新 State, Reducer 计算新状态（如 balance = 0 + 10 = 10），返回新 State 对象（不修改原 State）。
+5. Store 更新 State, Store 用新 State 替换旧 State。
+6. Store → UI（通知更新）, Store 通知所有订阅者（如 React 组件通过 useSelector 或 connect 订阅）——状态已变。
+7. UI 重新渲染, UI 读取新 State（如 $10），更新显示内容，完成一次闭环。
 ### 4.2 完整数据流示例
 
 ```javascript
@@ -671,6 +649,7 @@ function fetchUser(id) {
 // 使用
 store.dispatch(fetchUser(1));
 ```
+![Redux 数据流图](../_assets/redux-data-flow-2.gif)
 
 **Thunk 的工作原理：**
 

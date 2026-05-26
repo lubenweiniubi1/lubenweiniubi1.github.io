@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const NOTES_DIR = __dirname;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // ============================================================
 // 1. 扫描 notes 目录，返回按文件夹分组的 md 文件列表
