@@ -1,3 +1,7 @@
+[← 返回笔记目录](/) 
+
+---
+
 https://redux.js.org/introduction/getting-started
 
 - 先听课

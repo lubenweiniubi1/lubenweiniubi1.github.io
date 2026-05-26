@@ -1,3 +1,7 @@
+[← 返回笔记目录](/) 
+
+---
+
 # 类组件的 state
 
 下面是关于 \*\*React 类组件（Class Components）中 `setState` 的笔记
