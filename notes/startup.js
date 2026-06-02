@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const { exec } = require("child_process");
 
 const NOTES_DIR = __dirname;
 const PORT = process.env.PORT || 3001;
@@ -241,7 +242,11 @@ app.use((err, _req, res, _next) => {
 // 5. 启动
 // ============================================================
 app.listen(PORT, () => {
-  console.log("✅ 笔记导航已启动: http://localhost:" + PORT);
+  const url = "http://localhost:" + PORT;
+  console.log("✅ 笔记导航已启动: " + url);
   console.log("📁 扫描目录: " + NOTES_DIR);
   console.log("🔁 按 Ctrl+C 停止\n");
+
+  // 自动打开浏览器
+  exec(`open ${url}`);
 });

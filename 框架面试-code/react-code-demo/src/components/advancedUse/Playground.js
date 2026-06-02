@@ -15,9 +15,17 @@ class Mouse extends Component {
     });
   };
 
+  componentDidMount() {
+    const dx = document.getElementById('ab')
+    const kes = Object.keys(dx);
+    console.log(dx[kes[0]]);
+    
+    
+  }
+
   render() {
     return (
-      <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
+      <div id='ab' style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
        { this.props.render(this.state)}
       </div>
     );
