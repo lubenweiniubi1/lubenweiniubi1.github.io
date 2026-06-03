@@ -18,16 +18,41 @@ function scanNotes(dirPath) {
     if (entry.name.startsWith("_") || entry.name === "node_modules") continue;
 
     const folderPath = path.join(dirPath, entry.name);
-    const files = fs
-      .readdirSync(folderPath)
-      .filter(f => f.endsWith(".md"))
-      .sort();
+    const { files, groups } = scanFolder(folderPath);
 
-    folders.push({ folder: entry.name, files });
+    folders.push({ folder: entry.name, files, groups });
   }
 
   folders.sort((a, b) => a.folder.localeCompare(b.folder));
   return folders;
+}
+
+/**
+ * 扫描单层目录，区分顶层 .md 文件和子目录分组
+ */
+function scanFolder(dirPath) {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  const files = [];
+  const groups = [];
+
+  for (const entry of entries) {
+    if (entry.name.startsWith("_") || entry.name === "node_modules") continue;
+    const fullPath = path.join(dirPath, entry.name);
+
+    if (entry.isDirectory()) {
+      const groupFiles = fs.readdirSync(fullPath)
+        .filter(f => f.endsWith(".md"))
+        .sort();
+      if (groupFiles.length > 0) {
+        groups.push({ name: entry.name, files: groupFiles });
+      }
+    } else if (entry.name.endsWith(".md")) {
+      files.push(entry.name);
+    }
+  }
+
+  files.sort();
+  return { files, groups };
 }
 
 // ============================================================
@@ -57,11 +82,38 @@ function getFolderStyle(folderName) {
 function renderPage(folders) {
   let totalFiles = 0;
   let nonEmpty = 0;
-  folders.forEach(f => { totalFiles += f.files.length; if (f.files.length) nonEmpty++; });
+  folders.forEach(f => {
+    const count = f.files.length + f.groups.reduce((s, g) => s + g.files.length, 0);
+    totalFiles += count;
+    if (count) nonEmpty++;
+  });
+
+  function renderFileList(folderName, groupName, fileList, groupPrefix) {
+    let html = '<ul class="file-list">';
+    fileList.forEach(file => {
+      const name = file.replace(/\.md$/, "");
+      const href = "/" + encodeURIComponent(folderName) + "/"
+        + (groupPrefix ? encodeURIComponent(groupPrefix) + "/" : "")
+        + encodeURIComponent(file);
+      html += `
+        <li class="file-item" data-keywords="${folderName} ${groupName} ${name} ${file}">
+          <a class="file-link" href="${href}">
+            <span class="file-icon md">📄</span>
+            <span class="file-name">${name}</span>
+            <span class="file-arrow">→</span>
+          </a>
+        </li>`;
+    });
+    html += '</ul>';
+    return html;
+  }
 
   let sectionsHtml = "";
   folders.forEach(sec => {
-    const isEmpty = sec.files.length === 0;
+    const secFileCount = sec.files.length;
+    const secGroupCount = sec.groups.reduce((s, g) => s + g.files.length, 0);
+    const totalCount = secFileCount + secGroupCount;
+    const isEmpty = totalCount === 0;
     const { icon, bg } = getFolderStyle(sec.folder);
 
     sectionsHtml += `
@@ -69,25 +121,29 @@ function renderPage(folders) {
         <div class="section-header">
           <div class="section-icon" style="background:${bg}">${icon}</div>
           <span class="section-title">${sec.folder}</span>
-          <span class="section-count">${sec.files.length} 篇</span>
+          <span class="section-count">${totalCount} 篇</span>
         </div>`;
 
-    if (!isEmpty) {
-      sectionsHtml += '<ul class="file-list">';
-      sec.files.forEach(file => {
-        const name = file.replace(/^\d+-/, "").replace(/\.md$/, "");
-        const href = "/" + encodeURIComponent(sec.folder) + "/" + encodeURIComponent(file);
-        sectionsHtml += `
-          <li class="file-item" data-keywords="${sec.folder} ${name} ${file}">
-            <a class="file-link" href="${href}">
-              <span class="file-icon md">📄</span>
-              <span class="file-name">${name}</span>
-              <span class="file-arrow">→</span>
-            </a>
-          </li>`;
-      });
-      sectionsHtml += '</ul>';
+    // 顶层直连的 .md 文件
+    if (secFileCount > 0) {
+      sectionsHtml += renderFileList(sec.folder, "", sec.files, "");
     }
+
+    // 子目录分组（默认折叠）
+    sec.groups.forEach(group => {
+      sectionsHtml += `
+        <div class="sub-section">
+          <div class="sub-section-header toggle-trigger">
+            <span class="toggle-icon">▶</span>
+            <span class="sub-section-icon">📂</span>
+            <span class="sub-section-title">${group.name.replace(/^\d+-/, "")}</span>
+            <span class="section-count">${group.files.length} 篇</span>
+          </div>
+          <div class="toggle-body">`;
+      sectionsHtml += renderFileList(sec.folder, group.name, group.files, group.name);
+      sectionsHtml += '</div></div>';
+    });
+
     sectionsHtml += '</div>';
   });
 
@@ -140,6 +196,14 @@ function renderPage(folders) {
 '    .section-count { font-size: 0.8rem; color: var(--text-secondary); background: var(--tag-bg); padding: 2px 10px; border-radius: 20px; margin-left: auto; }\n' +
 '    .section-empty .section-title { color: #bcc3ce; }\n' +
 '    .section-empty .section-icon { opacity: 0.4; }\n' +
+'    .sub-section { margin: 0 0 10px 14px; padding-left: 14px; border-left: 2px solid var(--border); }\n' +
+'    .sub-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding-top: 2px; }\n' +
+'    .toggle-trigger { cursor: pointer; user-select: none; }\n' +
+'    .toggle-trigger:hover .sub-section-title { color: var(--accent); }\n' +
+'    .toggle-icon { font-size: 0.65rem; color: #9aa5b8; transition: transform 0.2s; flex-shrink: 0; width: 12px; text-align: center; }\n' +
+'    .toggle-body.collapsed { display: none; }\n' +
+'    .sub-section-icon { font-size: 0.95rem; flex-shrink: 0; }\n' +
+'    .sub-section-title { font-size: 0.95rem; font-weight: 500; color: var(--text-secondary); }\n' +
 '    .file-list { list-style: none; display: grid; gap: 6px; }\n' +
 '    .file-item { background: var(--card-bg); border-radius: 8px; box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.15s; }\n' +
 '    .file-item:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }\n' +
@@ -184,6 +248,19 @@ function renderPage(folders) {
 '\n' +
 '<script>\n' +
 '(function(){\n' +
+'  // 子目录折叠切换\n' +
+'  document.querySelectorAll(".toggle-trigger").forEach(function(h){\n' +
+'    h.addEventListener("click",function(){\n' +
+'      var body=this.nextElementSibling;\n' +
+'      var icon=this.querySelector(".toggle-icon");\n' +
+'      if(body){body.classList.toggle("collapsed");}\n' +
+'      if(icon){icon.textContent=body&&body.classList.contains("collapsed")?"▶":"▼";}\n' +
+'    });\n' +
+'    // 默认折叠\n' +
+'    var body=h.nextElementSibling;\n' +
+'    if(body){body.classList.add("collapsed");}\n' +
+'  });\n' +
+'  // 搜索过滤\n' +
 '  var i=document.getElementById("searchInput");\n' +
 '  i.addEventListener("input",function(){\n' +
 '    var q=i.value.trim().toLowerCase();\n' +
@@ -195,6 +272,14 @@ function renderPage(folders) {
 '      });\n' +
 '      s.classList.toggle("hidden",!!q&&v===0);\n' +
 '    });\n' +
+'    // 搜索时自动展开匹配的子目录\n' +
+'    if(q){\n' +
+'      document.querySelectorAll(".toggle-trigger").forEach(function(h){\n' +
+'        var body=h.nextElementSibling;\n' +
+'        var hasVisible=body&&body.querySelector(".file-item:not(.hidden)");\n' +
+'        if(hasVisible){body.classList.remove("collapsed");h.querySelector(".toggle-icon").textContent="▼";}\n' +
+'      });\n' +
+'    }\n' +
 '  });\n' +
 '})();\n' +
 '</script>\n' +
