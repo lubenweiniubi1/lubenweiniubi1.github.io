@@ -9,7 +9,6 @@
 
 
 # 疑问
-捕获和冒泡
 stopImmediatePropagation
 并发模式
 
