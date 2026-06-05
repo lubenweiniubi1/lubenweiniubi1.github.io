@@ -1,3 +1,6 @@
+[← 返回笔记目录](/) 
+
+
 # 📚 Lerna 深入教学：从原理到最佳实践
 
 Lerna 是一个专为 JavaScript/TypeScript 多包项目设计的强大工具，它优化了使用 Git 和 npm/yarn 管理 monorepo（单仓库多包）的工作流程。本文将带你从零深入理解 Lerna 的核心原理、工作模式、完整命令体系以及企业级最佳实践。
@@ -1478,6 +1481,7 @@ function MainLayout({ children, routes, sidebarTitle }) {
 ```
 
 声明 `react` 和 `react-router-dom` 为 `peerDependencies`，确保在宿主包中使用已安装的版本，避免重复打包。
+ `peerDependencies` 告诉使用者："我需要这个包，但我不直接安装它，你需要自己安装"
 
 ### 6. 更新 v16 子包
 
