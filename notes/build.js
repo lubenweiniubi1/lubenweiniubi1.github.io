@@ -36,7 +36,7 @@ function scanFolder(dirPath) {
   const groups = [];
 
   for (const entry of entries) {
-    if (entry.name.startsWith("_") || entry.name === "node_modules") continue;
+    if (entry.name.startsWith("_") || entry.name === "node_modules" || entry.name === "dist") continue;
     const fullPath = path.join(dirPath, entry.name);
 
     if (entry.isDirectory()) {
@@ -306,30 +306,35 @@ function copyMdFiles(srcDir, distDir) {
 // ============================================================
 // 5. 主流程
 // ============================================================
-console.log("🔍 扫描笔记目录: " + NOTES_DIR);
+try {
+  console.log("🔍 扫描笔记目录: " + NOTES_DIR);
 
-// 清理旧的 dist/
-if (fs.existsSync(DIST_DIR)) {
-  fs.rmSync(DIST_DIR, { recursive: true });
+  // 清理旧的 dist/
+  if (fs.existsSync(DIST_DIR)) {
+    fs.rmSync(DIST_DIR, { recursive: true });
+  }
+
+  // 创建 dist/
+  fs.mkdirSync(DIST_DIR, { recursive: true });
+
+  // 扫描并生成 index.html
+  const folders = scanNotes(NOTES_DIR);
+  const html = renderPage(folders);
+  fs.writeFileSync(path.join(DIST_DIR, "index.html"), html, "utf-8");
+  console.log("✅ 生成 index.html");
+
+  // 复制 .md 文件
+  copyMdFiles(NOTES_DIR, DIST_DIR);
+  console.log("✅ 复制 .md 文件");
+
+  // 统计
+  let totalFiles = 0;
+  folders.forEach(f => {
+    totalFiles += f.files.length + f.groups.reduce((s, g) => s + g.files.length, 0);
+  });
+  console.log("📊 共 " + folders.length + " 个模块, " + totalFiles + " 篇笔记");
+  console.log("📁 输出目录: " + DIST_DIR);
+} catch (err) {
+  console.error("❌ 构建失败: " + err.message);
+  process.exit(1);
 }
-
-// 创建 dist/
-fs.mkdirSync(DIST_DIR, { recursive: true });
-
-// 扫描并生成 index.html
-const folders = scanNotes(NOTES_DIR);
-const html = renderPage(folders);
-fs.writeFileSync(path.join(DIST_DIR, "index.html"), html, "utf-8");
-console.log("✅ 生成 index.html");
-
-// 复制 .md 文件
-copyMdFiles(NOTES_DIR, DIST_DIR);
-console.log("✅ 复制 .md 文件");
-
-// 统计
-let totalFiles = 0;
-folders.forEach(f => {
-  totalFiles += f.files.length + f.groups.reduce((s, g) => s + g.files.length, 0);
-});
-console.log("📊 共 " + folders.length + " 个模块, " + totalFiles + " 篇笔记");
-console.log("📁 输出目录: " + DIST_DIR);
