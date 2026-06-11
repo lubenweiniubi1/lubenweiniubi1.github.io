@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------
+# name: 工作流名称，显示在 GitHub 仓库的 Actions 标签页
+# ---------------------------------------------------------------
+name: Deploy to GitHub Pages
+
+# ---------------------------------------------------------------
+# on: 触发器 — 什么时候自动运行
+# ---------------------------------------------------------------
+on:
+  push:
+    branches: [main]                 # 只有 push 到 main 分支才触发
+
+# ---------------------------------------------------------------
+# jobs: 要执行的任务
+# ---------------------------------------------------------------
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest           # 运行环境：GitHub 的 Ubuntu 虚拟机
+
+    # ---------------------------------------------------------------
+    # permissions: 这个 job 需要的权限
+    # ---------------------------------------------------------------
+    permissions:
+      contents: read                  # 只需要读仓库代码（checkout 用）
+      pages: write                    # 写入 Pages（deploy-pages 需要）
+      id-token: write                 # OIDC 身份验证（configure-pages + deploy-pages 需要）
+
+    # ---------------------------------------------------------------
+    # environment: 部署目标环境
+    # ---------------------------------------------------------------
+    environment:
+      name: github-pages              # 部署环境名称
+      url: ${{ steps.deploy.outputs.page_url }}  # 部署后的公开 URL
+
+    steps:
+      # --- 步骤 1：拉取代码 ---
+      - uses: actions/checkout@v4     # 把仓库代码拉到虚拟机
+
+      # --- 步骤 2：安装 Node.js ---
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20            # 安装 Node.js 20 版本
+
+      # --- 步骤 3：生成静态文件 ---
+      - run: node notes/build.js      # 运行构建脚本，输出到 notes/dist/
+
+      # --- 步骤 4：配置 Pages ---
+      - uses: actions/configure-pages@v4  # GitHub 官方 action：读取仓库 Pages 设置
+
+      # --- 步骤 5：上传构建产物 ---
+      - uses: actions/upload-pages-artifact@v3  # 把 notes/dist/ 打包上传为部署产物
+        with:
+          path: ./notes/dist          # 要上传的目录
+
+      # --- 步骤 6：部署到 GitHub Pages ---
+      - id: deploy                    # 给步骤起 id，供上面 environment.url 引用
+        uses: actions/deploy-pages@v4 # GitHub 官方 action：把产物部署到 Pages
