@@ -169,7 +169,8 @@ Context = System Prompt + 对话历史 + 当前 User Prompt + 工具调用结果
 
 ### 2.5 Prompt（提示词）
 
-**定义**：用户向 LLM 输入的指令文本，是人与 AI 交互的核心界面。
+**定义**：用户向 LLM 输入的指令文本，是人与 AI 交互的核心界面, [课程](https://www.bilibili.com/video/BV1BxV16FEaB?spm_id_from=333.788.videopod.episodes&vd_source=d66a6fb5cb08fa8db4dd3bf2bd839f71&p=5)。
+
 
 **Prompt 的两种类型**：
 
