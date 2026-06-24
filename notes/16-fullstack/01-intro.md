@@ -9,4 +9,4 @@ https://www.bilibili.com/video/BV1JZeDzLECX?spm_id_from=333.788.videopod.episode
 # 技术选型
 
 + 跨框架组件开发: preact
-+ [tailwind](/notes/100-其他/css-in-js.md)
++ [tailwind](./04-tailwind.md) 对比 [css in js](./03-css-in-js.md) 
