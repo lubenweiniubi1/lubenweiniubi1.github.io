@@ -10,3 +10,8 @@ https://www.bilibili.com/video/BV1JZeDzLECX?spm_id_from=333.788.videopod.episode
 
 + 跨框架组件开发: preact
 + [tailwind](./04-tailwind.md) 对比 [css in js](./03-css-in-js.md) 
++ [Drizzle ORM + postgres](./05-drizzle-orm.md)
++ 组件库 shadcn + radix
++ Uppy 上传
++ AWS S3
++ [docker](./06-docker.md)
