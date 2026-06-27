@@ -126,7 +126,6 @@ Level 4：「…这是 spec 文档 ↓」                       ← 结构化输
 ```tsx
 // 项目中的类似组件写法
 [粘贴 1-2 个高质量示例]
-```
 
 ## 输出格式
 1. 测试文件：`__tests__/ComponentName.test.tsx`
@@ -258,7 +257,6 @@ Review 以下代码，从以下维度给出建议：
 - 包管理：pnpm
 
 ## 目录结构
-```
 src/
 ├── components/    # 通用组件（纯展示 + 受控）
 ├── features/      # 业务模块（含 hooks + types + api）
@@ -266,7 +264,6 @@ src/
 ├── utils/         # 纯函数工具
 ├── types/         # 全局类型定义
 └── __tests__/     # 测试文件，镜像 src/ 结构
-```
 
 ## 编码规范
 

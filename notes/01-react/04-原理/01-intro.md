@@ -6,6 +6,6 @@
 + vdom 和 diff 算法
 + JSX本质
 + 合成事件
-+ setState #0 batchUpdate
++ setState  batchUpdate
 + 组件渲染过程
 + 前端路由
