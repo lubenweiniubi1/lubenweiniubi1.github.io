@@ -327,7 +327,7 @@ interface ApiError {
 ### React Query 使用
 - Query Key 用常量管理：`export const userKeys = { all: ['users'] as const, detail: (id: string) => ['users', id] as const }`
 - Mutation 必须处理 loading / error / success 三态
-```
+
 
 ### 3.4 约束体系的设计原则
 
