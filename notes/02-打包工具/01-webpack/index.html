@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        console.log('1. 普通脚本 - head');
+    </script>
+    
+    <script type="module">
+        console.log('2. 模块脚本 - head');
+    </script>
+</head>
+<body>
+    <div id="app">内容</div>
+    
+    <script>
+        console.log('3. 普通脚本 - body');
+    </script>
+    
+    <script type="module">
+        console.log('4. 模块脚本 - body');
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('5. DOMContentLoaded');
+        });
+    </script>
+</body>
+</html>
