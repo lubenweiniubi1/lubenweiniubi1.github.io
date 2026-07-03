@@ -1,0 +1,27 @@
+{
+  "name": "lubenweiniubi1.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "convert-images.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lubenweiniubi1/lubenweiniubi1.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lubenweiniubi1/lubenweiniubi1.github.io/issues"
+  },
+  "homepage": "https://github.com/lubenweiniubi1/lubenweiniubi1.github.io#readme",
+  "dependencies": {
+    "sharp": "^0.35.3"
+  }
+}
