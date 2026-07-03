@@ -1,0 +1,16 @@
+![alt text](./assets/image.webp)
+![alt text](./assets/image-1.webp)
+![alt text](./assets/image-2.webp)
+![alt text](./assets/image-3.webp)![alt text](./assets/image-4.webp)
+![alt text](./assets/image-5.webp)
+![alt text](./assets/image-6.webp)
+![alt text](./assets/image-7.webp)
+![alt text](./assets/image-8.webp)
+
+路由前缀解决方法：父->子
+![alt text](./assets/image-9.webp)
+![alt text](./assets/image-10.webp)
+![alt text](./assets/image-11.webp)
+![alt text](./assets/image-12.webp)
+![alt text](./assets/image-13.webp)
+![alt text](./assets/image-14.webp)
