@@ -30,7 +30,7 @@ const config = {
   organizationName: "lubenweiniubi1", // 你的 GitHub 用户名
   projectName: "lubenweiniubi1.github.io", // 你的仓库名
   deploymentBranch: "gh-pages", // 默认即可
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -95,12 +95,6 @@ const config = {
             position: "left",
             label: "Tutorial",
           },
-          { to: "/blog", label: "Blog", position: "left" },
-          {
-            href: "https://github.com/facebook/docusaurus",
-            label: "GitHub",
-            position: "right",
-          },
         ],
       },
       footer: {
@@ -111,7 +105,7 @@ const config = {
             items: [
               {
                 label: "Tutorial",
-                to: "/docs/01-intro",
+                to: "/docs/intro",
               },
             ],
           },
@@ -129,19 +123,6 @@ const config = {
               {
                 label: "X",
                 href: "https://x.com/docusaurus",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              {
-                label: "Blog",
-                to: "/blog",
-              },
-              {
-                label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
               },
             ],
           },

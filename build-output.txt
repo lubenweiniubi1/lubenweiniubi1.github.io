@@ -1,0 +1,219 @@
+﻿
+> temp-docusaurus@0.0.0 build
+> docusaurus build
+
+[INFO] [en] Creating an optimized production build...
+node.exe : [WARNING] Docusaurus static site generation process emitted warnings for 2 paths
+At line:1 char:1
++ & "C:\nvm4w\nodejs/node.exe" "C:\nvm4w\nodejs/node_modules/npm/bin/np ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WARNING] Docus...ngs for 2 paths:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+This is non-critical and can be disabled with DOCUSAURUS_IGNORE_SSG_WARNINGS=true
+Troubleshooting guide: https://github.com/facebook/docusaurus/discussions/10580
+
+- "/docs/面经/跨端组件库":
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":128335,"start":128332}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":128361,"start":128357}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":128705,"start":128702}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":128755,"start":128751}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":129427,"start":129424}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":129462,"start":129458}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":130128,"start":130125}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":130175,"start":130171}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":130790,"start":130787}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":130816,"start":130812}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":131435,"start":131432}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":131477,"start":131473}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":131917,"start":131914}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":131946,"start":131942}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":132273,"start":132270}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":132321,"start":132317}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":132874,"start":132871}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":132921,"start":132917}],"span_label
+s":[]}
+
+- "/docs/面经/性能案例":
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":238180,"start":238177}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":238206,"start":238202}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":238312,"start":238309}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":238362,"start":238358}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":238898,"start":238895}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":238985,"start":238981}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":239115,"start":239112}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":239193,"start":239189}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":239643,"start":239640}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":239731,"start":239727}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":239867,"start":239864}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":239950,"start":239946}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":240276,"start":240273}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":240344,"start":240340}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":240486,"start":240483}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":240575,"start":240571}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":240675,"start":240672}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":240719,"start":240715}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":241051,"start":241048}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":241083,"start":241079}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":241829,"start":241826}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":241861,"start":241857}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":242264,"start":242261}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":242320,"start":242316}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":243589,"start":243586}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":243647,"start":243643}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":245036,"start":245033}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":245075,"start":245071}],"span_label
+s":[]}
+  - [HTML minifier diagnostic - error] Start tag "a" seen but an element of the same type was already open - {"primary_
+spans":[{"end":245631,"start":245628}],"span_labels":[]}
+  - [HTML minifier diagnostic - error] Stray end tag "a" - {"primary_spans":[{"end":245681,"start":245677}],"span_label
+s":[]}
+
+
+[ERROR] Error: Unable to build website for locale en.
+    at tryToBuildLocale (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\build.j
+s:76:15)
+    at async D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\build.js:34:9
+    ... 4 lines matching cause stack trace ...
+    at async file:///D:/workspace/lubenweiniubi1.github.io/node_modules/@docusaurus/core/bin/docusaurus.mjs:44:3 {
+  [cause]: Error: Docusaurus found broken links!
+  
+  Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist
+.
+  Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
+  
+  Exhaustive list of all broken links found:
+  - Broken link on source page path = /docs/面经/面试考察总览与策略:
+     -> linking to 04-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E4%B8%8E%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E9%9D%A2%E8%AF%
+95%E9%A2%98.md (resolved as: /docs/%E9%9D%A2%E7%BB%8F/04-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E4%B8%8E%E6%89%8B%E5%86%9
+9%E4%BB%A3%E7%A0%81%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+     -> linking to 02-React%E6%A0%B8%E5%BF%83%E6%B7%B1%E5%BA%A6%E9%9D%A2%E8%AF%95%E9%A2%98.md (resolved as: /docs/%E9%9
+D%A2%E7%BB%8F/02-React%E6%A0%B8%E5%BF%83%E6%B7%B1%E5%BA%A6%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+     -> linking to 01-%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8.md (resolved as: /docs/%E9%9D%A2%E7%BB%8F/01-%E8%99%9A%E6%8B
+%9F%E5%88%97%E8%A1%A8.md)
+  - Broken link on source page path = /docs/面经/真实案例:
+     -> linking to packages/components/src/index.ts (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/components/src/inde
+x.ts)
+     -> linking to packages/storybook/stories/Button.stories.tsx (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/storyb
+ook/stories/Button.stories.tsx)
+     -> linking to packages/storybook/.storybook/main.js (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/storybook/.sto
+rybook/main.js)
+     -> linking to packages/demo/config/index.ts (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/demo/config/index.ts)
+     -> linking to packages/demo/src/pages/input/index.tsx (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/demo/src/pag
+es/input/index.tsx)
+     -> linking to packages/demo/src/pages/input/index.config.ts (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/demo/s
+rc/pages/input/index.config.ts)
+     -> linking to packages/demo/src/app.config.ts (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/demo/src/app.config.
+ts)
+     -> linking to packages/components/vite.config.ts (resolved as: /docs/%E9%9D%A2%E7%BB%8F/packages/components/vite.c
+onfig.ts)
+     -> linking to lerna.json (resolved as: /docs/%E9%9D%A2%E7%BB%8F/lerna.json)
+  - Broken link on source page path = /docs/intro:
+     -> linking to ./16-fullstack/04-tailwind.md (resolved as: /docs/16-fullstack/04-tailwind.md)
+     -> linking to ./16-fullstack/03-css-in-js.md (resolved as: /docs/16-fullstack/03-css-in-js.md)
+     -> linking to ./10-%E9%9D%A2%E8%AF%95%E9%A2%98/12-%E8%B7%A8%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%BA%93.md (resolved as: /
+docs/10-%E9%9D%A2%E8%AF%95%E9%A2%98/12-%E8%B7%A8%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%BA%93.md)
+     -> linking to ./10-%E9%9D%A2%E8%AF%95%E9%A2%98/11-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%85%AB%E8%82%A1%E6%96%87.md (resol
+ved as: /docs/10-%E9%9D%A2%E8%AF%95%E9%A2%98/11-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%85%AB%E8%82%A1%E6%96%87.md)
+     -> linking to ./09-%E5%BE%AE%E5%89%8D%E7%AB%AF/ (resolved as: /docs/09-%E5%BE%AE%E5%89%8D%E7%AB%AF/)
+     -> linking to ./09-%E5%BE%AE%E5%89%8D%E7%AB%AF/06.single-spa%20%E5%92%8C%20qiankun.md (resolved as: /docs/09-%E5%B
+E%AE%E5%89%8D%E7%AB%AF/06.single-spa%20%E5%92%8C%20qiankun.md)
+     -> linking to ./09-%E5%BE%AE%E5%89%8D%E7%AB%AF/04-%E5%BE%AE%E6%9C%8D%E5%8A%A1.md (resolved as: /docs/09-%E5%BE%AE%
+E5%89%8D%E7%AB%AF/04-%E5%BE%AE%E6%9C%8D%E5%8A%A1.md)
+     -> linking to ./16-fullstack/05-drizzle-orm.md (resolved as: /docs/16-fullstack/05-drizzle-orm.md)
+     -> linking to ./11-AI/08-RAG.md (resolved as: /docs/11-AI/08-RAG.md)
+[INFO] Docusaurus version: 3.10.1
+Node version: v24.14.0
+     -> linking to ./11-AI/07-%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E5%90%88%E4%BD%9C.md (resolved as: /docs/11-AI/07-%E
+5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E5%90%88%E4%BD%9C.md)
+     -> linking to ./11-AI/04-SDD+TDD.md (resolved as: /docs/11-AI/04-SDD+TDD.md)
+     -> linking to ./11-AI/05-harness-engineering.md (resolved as: /docs/11-AI/05-harness-engineering.md)
+     -> linking to ./16-fullstack/06-docker.md (resolved as: /docs/16-fullstack/06-docker.md)
+     -> linking to ./16-fullstack/07-nginx.md (resolved as: /docs/16-fullstack/07-nginx.md)
+     -> linking to ./13-github/01-github.action.md (resolved as: /docs/13-github/01-github.action.md)
+     -> linking to ./10-%E9%9D%A2%E8%AF%95%E9%A2%98/06-%E6%9E%B6%E6%9E%84%E9%9D%A2%E8%AF%95.md (resolved as: /docs/10-%
+E9%9D%A2%E8%AF%95%E9%A2%98/06-%E6%9E%B6%E6%9E%84%E9%9D%A2%E8%AF%95.md)
+     -> linking to ./09-%E5%BE%AE%E5%89%8D%E7%AB%AF/05-%E6%89%93%E5%8C%85%E6%A8%A1%E5%BC%8F.md (resolved as: /docs/09-%
+E5%BE%AE%E5%89%8D%E7%AB%AF/05-%E6%89%93%E5%8C%85%E6%A8%A1%E5%BC%8F.md)
+     -> linking to ./16-fullstack/02-ssr+rsc+csr.md (resolved as: /docs/16-fullstack/02-ssr+rsc+csr.md)
+     -> linking to ./12-%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81/01-jwt.md (resolved as: /docs/12-%E7%99%BB%E5%BD%95%E9%AA%
+8C%E8%AF%81/01-jwt.md)
+     -> linking to ./10-%E9%9D%A2%E8%AF%95%E9%A2%98/03-%E5%B7%A5%E7%A8%8B%E5%8C%96%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%
+E5%8C%96%E9%9D%A2%E8%AF%95%E9%A2%98.md (resolved as: /docs/10-%E9%9D%A2%E8%AF%95%E9%A2%98/03-%E5%B7%A5%E7%A8%8B%E5%8C%9
+6%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+     -> linking to ./10-%E9%9D%A2%E8%AF%95%E9%A2%98/07-%E6%80%A7%E8%83%BD%E6%A1%88%E4%BE%8B.md (resolved as: /docs/10-%
+E9%9D%A2%E8%AF%95%E9%A2%98/07-%E6%80%A7%E8%83%BD%E6%A1%88%E4%BE%8B.md)
+     -> linking to ./11-AI/06-sse-websocket-http.md (resolved as: /docs/11-AI/06-sse-websocket-http.md)
+     -> linking to ./16-fullstack/08-ws.md (resolved as: /docs/16-fullstack/08-ws.md)
+     -> linking to ./16-fullstack/09-CI-CD.md (resolved as: /docs/16-fullstack/09-CI-CD.md)
+     -> linking to ./11-AI/09-frontend-workflow.md (resolved as: /docs/11-AI/09-frontend-workflow.md)
+  
+      at throwError (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\logger\lib\logger.js:80:11)
+      at reportBrokenLinks (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\server\brokenLinks.
+js:250:47)
+      at handleBrokenLinks (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\server\brokenLinks.
+js:282:5)
+      at executeBrokenLinksCheck (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\buil
+d\buildLocale.js:123:47)
+      at D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\buildLocale.js:98:67
+      at Object.async (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\logger\lib\perfLogger.js:42:47)
+      at buildLocale (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\buildLocal
+e.js:98:31)
+      at async runBuildLocaleTask (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\bui
+ld\build.js:91:5)
+      at async D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\build.js:72:13
+      at async tryToBuildLocale (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build
+\build.js:68:9)
+      at async D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\build.js:34:9
+      at async mapAsyncSequential (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\utils\lib\jsUtils.js:
+21:24)
+      at async Command.build (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\build\bu
+ild.js:33:5)
+      at async Promise.all (index 0)
+      at async runCLI (D:\workspace\lubenweiniubi1.github.io\node_modules\@docusaurus\core\lib\commands\cli.js:56:5)
+      at async file:///D:/workspace/lubenweiniubi1.github.io/node_modules/@docusaurus/core/bin/docusaurus.mjs:44:3
+}
