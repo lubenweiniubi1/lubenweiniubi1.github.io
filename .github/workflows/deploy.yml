@@ -50,7 +50,7 @@ jobs:
           node-version: 20            # 安装 Node.js 20 版本
 
       # --- 步骤 3：生成静态文件 ---
-      - run: npm install & npm run build      # 运行构建脚本
+      - run: npm ci && npm run build      # 安装依赖并构建
 
       # --- 步骤 4：配置 Pages ---
       - uses: actions/configure-pages@v4  # GitHub 官方 action：读取仓库 Pages 设置
