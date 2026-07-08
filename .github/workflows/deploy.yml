@@ -50,7 +50,7 @@ jobs:
           node-version: 20            # 安装 Node.js 20 版本
 
       # --- 步骤 3：生成静态文件 ---
-      - run: node ./build.js      # 运行构建脚本
+      - run: npm run build      # 运行构建脚本
 
       # --- 步骤 4：配置 Pages ---
       - uses: actions/configure-pages@v4  # GitHub 官方 action：读取仓库 Pages 设置
@@ -58,7 +58,7 @@ jobs:
       # --- 步骤 5：上传构建产物 ---
       - uses: actions/upload-pages-artifact@v3  # 把 notes/dist/ 打包上传为部署产物
         with:
-          path: ./dist          # 要上传的目录
+          path: ./build          # 要上传的目录
 
       # --- 步骤 6：部署到 GitHub Pages ---
       - id: deploy                    # 给步骤起 id，供上面 environment.url 引用
