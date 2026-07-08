@@ -1448,7 +1448,7 @@ declare namespace Express {
 
 **收束**
 
-import 报错三板斧：路径 → moduleResolution → @types/node_modules。namespace = 历史遗留，新代码碰都别碰。
+`import` 报错三板斧：路径 → moduleResolution → @types/node_modules。namespace = 历史遗留，新代码碰都别碰。
 
 > 📖 详见：[08-modules-namespaces.md](knowledge/08-modules-namespaces.md)
 
