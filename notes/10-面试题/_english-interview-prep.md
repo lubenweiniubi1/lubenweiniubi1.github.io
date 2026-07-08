@@ -42,6 +42,15 @@ Cue note:
 - **Action:** I picked the tech stack — Lerna + Yarn Workspace monorepo. Designed the component APIs to work with Taro's compile step. Set the architecture: each component hides platform differences inside, looks the same outside. Led the team to build 15+ components. I chose the tools, designed the approach. The team built the components.
 - **Result:** No more duplicate UI work. Components built once, used on WeChat, Douyin, and H5. New features shipped on all three at the same time. Teams moved faster.
 
+### Q: Tell me about a time you dealt with a growing codebase — how did you keep it manageable?
+
+**Map to:** Porsche Web Admin → qiankun Micro-Frontend Split
+
+- **Situation:** The Porsche Web Admin started small. Dealers log in, check leads, manage their car listings. But over two years, more and more stuff got added. Used cars. New cars. Lead reports. Dealer performance. All in one repo. The build took forever. One team's change could break something from another team. The code was over 100,000 lines and still growing. We knew this couldn't keep going.
+- **Task:** Break the big app into smaller, separate apps. One app for leads. One for new cars. One for used cars. One for reports. Each team works on their own app. Builds and deploys on their own. Nobody blocks anyone else.
+- **Action:** I looked at a few micro-frontend tools and picked qiankun. It worked well with React. It fit what we already had. No need to rewrite everything. I built a main shell app — it handled login, the menu, and shared data like who's logged in. Each sub-app plugged into the shell. The tricky part was that we couldn't stop all work and rebuild the whole thing. So I moved one module at a time. Old pages stayed where they were. New features went into sub-apps. Then we moved old pages over, one by one, when there was time. I also had to make sure two sub-apps wouldn't mess up each other's styles or variables. Qiankun covered most of that.
+- **Result:** One shell plus five sub-apps. Builds went from 10+ minutes to under 2. Each team deployed on their own. Much easier to manage. Users didn't feel a thing — we moved piece by piece, no downtime.
+
 ### Q: How do you handle disagreements in code review?
 
 **Map to:** Thoughtworks engineering culture
@@ -77,7 +86,71 @@ Cue note:
 
 ---
 
-## 3. HR & Culture Questions
+## 3. Technical Questions
+
+### Q: How do you optimize first-screen load time?
+
+I think about it in three layers.
+
+**Network layer — what travels over the wire.**
+First, CDN. Put your static files close to users. No reason a user in Shanghai should fetch from a server in Frankfurt. Second, HTTP/2. One connection, many requests in parallel. No more loading six files one by one. Third, `preload` for things the page needs right away — fonts, hero image. `prefetch` for things the user might need next. Use `async` or `defer` on scripts that aren't critical, so they don't block the page. And cache your API calls. Browser cache for things that rarely change. Memory cache for things you need across pages.
+
+**Build layer — what goes into the bundle.**
+Code splitting is the big one. Split by route first — don't send the settings page code to someone who's on the home page. Then split by component if something is big and not always visible. Tree shaking — if you import a library but only use one function, only ship that one function. Images — compress them, use WebP or AVIF. Way smaller than PNG. And with third-party libraries, import only what you need. Don't pull in the whole thing.
+
+**Render layer — what the user actually sees first.**
+SSR or SSG if your framework supports it. The user gets HTML right away, not a blank page with a spinner. But if you're on a purely client-side app, at least show a skeleton screen. Something that looks like the page. Not a loading circle. Inline your critical CSS in the `<head>` so the top part renders before the full CSS file loads. And for fonts, use `font-display: swap`. Show text in a fallback font first. Swap to the custom font when it arrives. No invisible text.
+
+### Q: 20 pages use the same table component, but 5 have unique logic. How do you design it?
+
+This isn't a coding question — it's an **architecture decision question**. The interviewer wants to see how you think through: scope → boundaries → API → implementation → testing → deployment → maintenance. Here's my framework:
+
+**Step 1 — Pick the reuse level (don't over-engineer)**
+
+| Level | Scope | How |
+|-------|-------|-----|
+| L1: Local | One page, cut duplication | A `<MyTable>` file extracting repeated columns |
+| L2: Project | 5+ pages, same project | Monorepo package, shared across pages |
+| L3: Cross-project | Multiple teams/projects | Independent npm package, docs, SemVer |
+
+20 pages, same project → **Level 2**. No npm publish. No standalone docs site. That's waste.
+
+**Step 2 — Draw the boundary**
+
+Component **owns**: rendering, pagination, sorting, row selection, loading/empty/error states, a11y.
+
+Component does **NOT** own: API calls (page fetches data, passes `dataSource` in), business state, routing, hardcoded business rules.
+
+**Gray zone** (the 5 special pages): handled through slots and render props — never hardcoded. `columnSlots`, `rowActionSlots`, `renderBefore`/`renderAfter` are the escape hatches.
+
+**Step 3 — Design the API**
+
+Props fall into four buckets:
+- **Data**: `dataSource`, `loading` — controlled by the page
+- **Config**: `columns`, `pagination`, `searchConfig` — defaults that can be overridden
+- **Callbacks**: `onPageChange`, `onSearch`, `onRowClick` — component forwards events, doesn't consume them
+- **Extensions**: `columnSlots`, `rowActionSlots`, `toolbar` — for the 5 special pages
+
+Golden rule: **make simple things simple, make complex things possible**. The 15 normal pages should work with 5 lines of config. The 5 special pages inject what they need through slots.
+
+**Step 4 — Implement + Test + Ship**
+
+- Monorepo package (`packages/pro-table/`) with typed hooks (`usePagination`, `useSelection`)
+- Unit tests on hooks first (highest ROI), then integration tests on key flows (search → paginate → select)
+- CI with 80% coverage threshold
+- Level 2 → source import within monorepo. No npm publish unless other projects actually need it.
+
+**Step 5 — Maintain without bloating**
+
+New feature gate: only add to the component when **3+ pages** need it. One page's special need → they use a slot. This keeps the component from becoming everything to everyone.
+
+Breaking changes: deprecate first, remove two majors later. Run full tests on every underlying library (antd) major upgrade.
+
+**The real answer:** Good component design is subtraction. Knowing what NOT to encapsulate — what stays in the page, what belongs in the component, and what waits for real validation — is the actual skill.
+
+---
+
+## 4. HR & Culture Questions
 
 These ones come up a lot. The interviewer just wants to know you're normal, you won't burn out in three months, and you'll fit in with the team.
 
@@ -111,7 +184,7 @@ Two, I've led a frontend team before. At Porsche I was the lead across four plat
 
 ---
 
-## 4. Project Walkthroughs (3-Minute Stories)
+## 5. Project Walkthroughs (3-Minute Stories)
 
 ### Porsche Car Sales System
 
@@ -149,7 +222,7 @@ Two, I've led a frontend team before. At Porsche I was the lead across four plat
 
 ---
 
-## 5. Questions to Ask the Interviewer
+## 6. Questions to Ask the Interviewer
 
 1. **Engineering culture:** "How does code review work on your team? How do you know when code is ready to ship?"
 2. **Tech problems:** "What's the hardest tech problem the team has right now?"
@@ -161,7 +234,7 @@ Two, I've led a frontend team before. At Porsche I was the lead across four plat
 
 ---
 
-## 6. Common Pitfalls & How to Handle Them
+## 7. Common Pitfalls & How to Handle Them
 
 | Potential Concern | How to Answer |
 |---|---|
