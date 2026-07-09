@@ -222,7 +222,91 @@ CAS 是最早的 SSO 协议之一，理解它之后 OAuth 就是"进阶版"。
 
 申请的权限范围。GitHub 的 `user:email` 表示只要邮箱，`repo` 表示要读写仓库。用户在授权页会看到"网站 A 想访问你的：邮箱、仓库..."。
 
-### 5.4 PKCE（Proof Key for Code Exchange，密钥交换证明）
+### 5.4 accessToken 和 refreshToken 怎么配合？
+
+换 token 那一步（⑦）后端拿到的其实是**两把钥匙**：
+
+```json
+{
+  "access_token": "eyJhbGc...",   // 短命，2 小时后过期
+  "expires_in": 7200,
+  "refresh_token": "def502...",   // 长命，30 天有效
+  "token_type": "Bearer"
+}
+```
+
+**为什么要两个？** 一句话：**access_token 要频繁上路，容易被偷；refresh_token 只在续命时用一次，藏得住。**
+
+#### 分工
+
+| Token | 有效期 | 用途 | 走哪 |
+|-------|--------|------|------|
+| access_token | 短（几分钟~几小时） | 每次调 API 都要带 | 前端 → 资源服务器 |
+| refresh_token | 长（几天~几个月） | 专门用来换新的 access_token | 后端 → 授权服务器 |
+
+#### 举个例子：小明用网站 A 挂了一晚上
+
+**第 1 分钟**：小明登录成功，网站 A 拿到 `access_token(2h)` + `refresh_token(30d)`。
+
+**第 1~120 分钟**：小明每次点按钮，前端带着 `access_token` 调后端 API：
+```
+GET /api/user/orders
+Authorization: Bearer eyJhbGc...
+→ 200 OK
+```
+
+**第 121 分钟**：access_token 过期了。小明再点按钮：
+```
+GET /api/user/orders
+Authorization: Bearer eyJhbGc...
+→ 401 Unauthorized (token expired)
+```
+
+**这时候两种做法：**
+
+- **做法 A（推荐）**：网站 A 的**后端**察觉到 access_token 过期，用悄悄保存的 refresh_token 去 GitHub 换新的：
+
+  ```
+  POST https://github.com/login/oauth/access_token
+    grant_type=refresh_token
+    refresh_token=def502...
+    client_id=xxx
+    client_secret=yyy
+  →
+  {
+    "access_token": "新的...",
+    "refresh_token": "新的...",   // 通常也会滚动更新
+    "expires_in": 7200
+  }
+  ```
+  换完之后重试原请求，小明**完全无感**——他只觉得网站从来没让他重新登录过。
+
+- **做法 B**：前端拦截到 401，自己发个 `/refresh` 请求给自家后端，后端再去换。效果一样，只是触发点在前端。
+
+**第 30 天**：refresh_token 也过期了。这时候真的没辙，小明必须重新走一遍 GitHub 授权流程。
+
+#### 为什么不干脆把 access_token 也设成 30 天？
+
+因为 access_token 每次调 API 都要带，暴露面大：
+
+- 前端 JS 可能读到（如果没放 HttpOnly Cookie）
+- 中间的日志、代理、Nginx 都可能记一份
+- 抓包工具能看到
+
+一旦泄漏，黑客拿着它就能干 30 天坏事。而 2 小时有效期意味着**泄漏也顶多用 2 小时**。
+
+refresh_token 就完全不同了：它只在"后端 → 授权服务器"这一条私密链路上跑，正常前端根本见不到它，泄漏概率低得多。
+
+#### 一个常见的坑：refresh_token 放哪？
+
+- ❌ 放 localStorage：任何 XSS 都能偷走，前功尽弃。
+- ❌ 放前端内存：刷新页面就没了，用户被迫重登。
+- ✅ 放服务端 Session / 数据库，前端只拿一个 sessionId Cookie（HttpOnly + Secure + SameSite）。
+- ✅ 或者放 HttpOnly Cookie（前端 JS 读不到，但会自动带给后端）。
+
+**总结成一句话**：access_token 是"一次性会议室通行证"，天天用完就换；refresh_token 是"保安室里的员工档案"，藏得深，用它来发新证。
+
+### 5.5 PKCE（Proof Key for Code Exchange，密钥交换证明）
 
 纯前端 SPA（比如 Vue/React 打包出来的静态站）没有后端，**装不下 `client_secret`**。这时候用 PKCE：
 
