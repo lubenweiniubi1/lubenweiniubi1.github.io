@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>每日 Checklist · Tesla 备战</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --line:#252a34; --fg:#e6e8eb; --dim:#8b929e;
+    --algo:#7aa2f7; --proj:#9ece6a; --qa:#e0af68; --eng:#bb9af7; --done:#3d4350;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f7f9; --card:#fff; --line:#e3e6ea; --fg:#1a1d23; --dim:#6b727e;
+      --algo:#2f6feb; --proj:#4a9c2d; --qa:#b8791a; --eng:#8250df; --done:#c9ced6; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    padding:20px 16px 60px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto}
+
+  header{margin-bottom:18px}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:var(--dim);font-size:13px}
+
+  .daypick{display:flex;gap:6px;margin:16px 0;flex-wrap:wrap}
+  .daypick button{flex:1;min-width:64px;padding:9px 4px;border:1px solid var(--line);
+    background:var(--card);color:var(--dim);border-radius:8px;font-size:13px;cursor:pointer;
+    font-family:inherit}
+  .daypick button[aria-pressed="true"]{border-color:var(--algo);color:var(--fg);font-weight:600}
+
+  .bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:14px 0 6px}
+  .bar>i{display:block;height:100%;background:var(--proj);width:0;transition:width .25s}
+  .barlab{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:20px}
+
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin-bottom:12px}
+  section.hidden{display:none}
+  .shead{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .time{font:600 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);
+    white-space:nowrap}
+  .stitle{font-weight:600;font-size:15px}
+  .tag{font-size:11px;padding:2px 7px;border-radius:99px;margin-left:auto;white-space:nowrap}
+  .t-algo{background:color-mix(in srgb,var(--algo) 18%,transparent);color:var(--algo)}
+  .t-proj{background:color-mix(in srgb,var(--proj) 18%,transparent);color:var(--proj)}
+  .t-qa{background:color-mix(in srgb,var(--qa) 18%,transparent);color:var(--qa)}
+  .t-eng{background:color-mix(in srgb,var(--eng) 18%,transparent);color:var(--eng)}
+
+  label.item{display:flex;gap:10px;align-items:flex-start;padding:7px 0;cursor:pointer;
+    border-top:1px solid var(--line)}
+  label.item:first-of-type{border-top:0}
+  input[type=checkbox]{appearance:none;width:18px;height:18px;flex:0 0 18px;margin-top:2px;
+    border:1.5px solid var(--dim);border-radius:5px;cursor:pointer;position:relative;
+    transition:all .15s}
+  input[type=checkbox]:checked{background:var(--proj);border-color:var(--proj)}
+  input[type=checkbox]:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;
+    height:10px;border:solid #0f1115;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .txt{flex:1}
+  input:checked ~ .txt{color:var(--done);text-decoration:line-through}
+  .note{display:block;font-size:12px;color:var(--dim);margin-top:2px}
+  input:checked ~ .txt .note{color:var(--done)}
+  b.hard{color:var(--qa)}
+
+  .rule{border-left:3px solid var(--qa)}
+  .rule ul{margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--dim)}
+  .rule li{margin:4px 0}
+
+  footer{margin-top:24px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  footer button{padding:8px 14px;border:1px solid var(--line);background:var(--card);
+    color:var(--dim);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit}
+  .hint{font-size:12px;color:var(--dim);margin-left:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>每日 Checklist</h1>
+  <div class="sub" id="today"></div>
+</header>
+
+<div class="daypick" id="daypick">
+  <button data-day="weekday" aria-pressed="true">工作日</button>
+  <button data-day="sat">周六</button>
+  <button data-day="sun">周日</button>
+</div>
+
+<div class="bar"><i id="fill"></i></div>
+<div class="barlab"><span id="count">0 / 0</span><span id="pct">0%</span></div>
+
+<!-- ── 工作日 ───────────────────────────── -->
+<section data-for="weekday">
+  <div class="shead">
+    <span class="time">21:00–21:30</span>
+    <span class="stitle">算法 30min</span>
+    <span class="tag t-algo">不许砍</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="wd-a1"><span class="txt">做 1–2 题（按本周主题，只用 Top Interview 150）</span></label>
+  <label class="item"><input type="checkbox" data-id="wd-a2"><span class="txt">走完 8 步流程<span class="note">复述题目 → 问约束 → 举例 → 暴力解+复杂度 → 说优化方向 → 边写边说 → 自测 → 复杂度</span></span></label>
+  <label class="item"><input type="checkbox" data-id="wd-a3"><span class="txt">卡住 25min 就看题解<span class="note">理解后当天不再写，隔 3 天重写。硬磕 1 小时是最低效的学法</span></span></label>
+  <label class="item"><input type="checkbox" data-id="wd-a4"><span class="txt">做错的题记进 <code>algo-mistakes.md</code><span class="note">只记「我当时的错误思路」，不记题解</span></span></label>
+</section>
+
+<section data-for="weekday">
+  <div class="shead">
+    <span class="time">21:30–23:00</span>
+    <span class="stitle">项目 90min</span>
+    <span class="tag t-proj">主线</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="wd-p0"><span class="txt">开工前 <code>docker compose ps</code> 确认环境健康</span></label>
+  <label class="item"><input type="checkbox" data-id="wd-p1"><span class="txt">今天只有 <b class="hard">1 条</b>主任务，写在纸上</span></label>
+  <label class="item"><input type="checkbox" data-id="wd-p2"><span class="txt">卡壳 &gt; 45min 停下来问：能不能绕过？<span class="note">能绕就绕，记进卡壳日志，第二天不重试同一方案</span></span></label>
+  <label class="item"><input type="checkbox" data-id="wd-p3"><span class="txt">收工前 commit（哪怕 WIP）</span></label>
+  <label class="item"><input type="checkbox" data-id="wd-p4"><span class="txt">写下明天第一件事</span></label>
+</section>
+
+<!-- ── 周六 ───────────────────────────── -->
+<section data-for="sat" class="hidden">
+  <div class="shead">
+    <span class="time">09:00–12:00</span>
+    <span class="stitle">项目攻坚 3h</span>
+    <span class="tag t-proj">最难的那块</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="sa-p1"><span class="txt">做本周<b class="hard">最难</b>那块<span class="note">新概念 / 已卡壳的 / 需要连续思考的。别拿这 3h 做琐事</span></span></label>
+  <label class="item"><input type="checkbox" data-id="sa-p2"><span class="txt">开工前先花 10min 写清「这 3h 结束时什么算成功」</span></label>
+  <label class="item"><input type="checkbox" data-id="sa-p3"><span class="txt">时间不够时<b class="hard">先砍这里</b><span class="note">砍顺序：周六项目 → 八股 → 算法和 iTalki 绝不砍</span></span></label>
+</section>
+
+<section data-for="sat" class="hidden">
+  <div class="shead">
+    <span class="time">任意时段</span>
+    <span class="stitle">算法 30min</span>
+    <span class="tag t-algo">不许砍</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="sa-a1"><span class="txt">1–2 题，同样走 8 步流程</span></label>
+</section>
+
+<!-- ── 周日 ───────────────────────────── -->
+<section data-for="sun" class="hidden">
+  <div class="shead">
+    <span class="time">20:00–21:00</span>
+    <span class="stitle">八股 1h</span>
+    <span class="tag t-qa">寄生在项目上</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="su-q1"><span class="txt">整理本周 3–5 条，写进 <code>interview-qa-q1.md</code></span></label>
+  <label class="item"><input type="checkbox" data-id="su-q2"><span class="txt"><b class="hard">只写这周真实碰到过的</b><span class="note">没做过的技术不进文档。背来的守不住第二层追问，做过的能撑到第四层</span></span></label>
+  <label class="item"><input type="checkbox" data-id="su-q3"><span class="txt">每条中英各一版</span></label>
+  <label class="item"><input type="checkbox" data-id="su-q4"><span class="txt">翻一遍 <code>stuck-log.md</code> 找素材<span class="note">卡壳日志是最真实的八股来源</span></span></label>
+</section>
+
+<section data-for="sun" class="hidden">
+  <div class="shead">
+    <span class="time">21:00–21:30</span>
+    <span class="stitle">周报 + 拆解 30min</span>
+    <span class="tag t-proj">自己看</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="su-r1"><span class="txt">写周复盘：做完了什么 / 卡在哪 / 下周调整什么</span></label>
+  <label class="item"><input type="checkbox" data-id="su-r2"><span class="txt">下周 5 天任务落到日历</span></label>
+  <label class="item"><input type="checkbox" data-id="su-r3"><span class="txt">统计本周投入小时数<span class="note">低于 10h → 按砍法顺序砍；连续 3 周低于 10h → 整体延一个季度，不压缩内容</span></span></label>
+  <label class="item"><input type="checkbox" data-id="su-r4"><span class="txt">本周算法 ≥ 6 题？其中 ≥ 2 道全英文讲过？</span></label>
+</section>
+
+<section data-for="sun" class="hidden">
+  <div class="shead"><span class="stitle">休息</span><span class="tag t-proj">别跳过</span></div>
+  <label class="item"><input type="checkbox" data-id="su-x1"><span class="txt">奖励自己休息半天<span class="note">长期节奏比单周产出重要。这是 48 周的事，不是冲刺</span></span></label>
+</section>
+
+<!-- ── 每天都有 ───────────────────────────── -->
+<section data-for="all">
+  <div class="shead">
+    <span class="stitle">英语（碎片时间）</span>
+    <span class="tag t-eng">每天</span>
+  </div>
+  <label class="item"><input type="checkbox" data-id="en-1"><span class="txt">通勤影子跟读英文技术视频 20min</span></label>
+  <label class="item"><input type="checkbox" data-id="en-2"><span class="txt">今天如果有 iTalki：专聊本周做的技术<span class="note">每周 2 次 × 30min。每月至少 1 次让外教听你讲算法题并打断提问</span></span></label>
+  <label class="item"><input type="checkbox" data-id="en-3"><span class="txt">今天有没有<b class="hard">出声</b>说过英文？<span class="note">一周至少 2 道算法题全程英文口述 —— 这条最容易偷懒，也最不能偷懒</span></span></label>
+</section>
+
+<section class="rule" data-for="all">
+  <div class="shead"><span class="stitle">三条铁律</span></div>
+  <ul>
+    <li><b>算法和 iTalki 永不中断</b> —— 断了最难恢复，衰减最快</li>
+    <li><b>八股只写做过的</b> —— 外企面试层层追问，背的撑不过第二层</li>
+    <li><b>时间不足砍范围，不砍频率</b> —— 宁可少做，不要停</li>
+  </ul>
+</section>
+
+<footer>
+  <button id="reset">清空今天</button>
+  <span class="hint">勾选自动保存，每天 0 点自动重置</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY='daily-checklist';
+  var boxes=[].slice.call(document.querySelectorAll('input[type=checkbox]'));
+  var d=new Date();
+  var dateStr=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  var dayNames=['周日','周一','周二','周三','周四','周五','周六'];
+  var dow=d.getDay();
+
+  document.getElementById('today').textContent=dateStr+' · '+dayNames[dow];
+
+  // 按今天自动选 tab
+  var mode = dow===6 ? 'sat' : dow===0 ? 'sun' : 'weekday';
+
+  // 读取当天存档（跨天自动作废）
+  var saved={};
+  try{
+    var raw=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(raw.date===dateStr) saved=raw.checked||{};
+  }catch(e){}
+
+  function save(){
+    var checked={};
+    boxes.forEach(function(b){ if(b.checked) checked[b.dataset.id]=1; });
+    try{ localStorage.setItem(KEY,JSON.stringify({date:dateStr,checked:checked})); }catch(e){}
+  }
+
+  function visibleBoxes(){
+    return boxes.filter(function(b){
+      var s=b.closest('section');
+      return s && !s.classList.contains('hidden');
+    });
+  }
+
+  function progress(){
+    var v=visibleBoxes(), n=v.filter(function(b){return b.checked;}).length;
+    var pct = v.length ? Math.round(n/v.length*100) : 0;
+    document.getElementById('fill').style.width=pct+'%';
+    document.getElementById('count').textContent=n+' / '+v.length;
+    document.getElementById('pct').textContent=pct+'%';
+  }
+
+  function setMode(m){
+    mode=m;
+    document.querySelectorAll('#daypick button').forEach(function(btn){
+      btn.setAttribute('aria-pressed', String(btn.dataset.day===m));
+    });
+    document.querySelectorAll('section[data-for]').forEach(function(s){
+      var f=s.dataset.for;
+      s.classList.toggle('hidden', f!=='all' && f!==m);
+    });
+    progress();
+  }
+
+  boxes.forEach(function(b){
+    if(saved[b.dataset.id]) b.checked=true;
+    b.addEventListener('change',function(){ save(); progress(); });
+  });
+
+  document.querySelectorAll('#daypick button').forEach(function(btn){
+    btn.addEventListener('click',function(){ setMode(btn.dataset.day); });
+  });
+
+  document.getElementById('reset').addEventListener('click',function(){
+    boxes.forEach(function(b){ b.checked=false; });
+    save(); progress();
+  });
+
+  setMode(mode);
+})();
+</script>
+</body>
+</html>
